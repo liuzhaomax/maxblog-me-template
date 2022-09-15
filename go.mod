@@ -1,3 +1,3 @@
-module maxblog-me
+module maxblog-me-template
 
-go 1.17
+go 1.19
