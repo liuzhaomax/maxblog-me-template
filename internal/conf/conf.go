@@ -1,0 +1,67 @@
+package conf
+
+import (
+	"github.com/spf13/viper"
+	"maxblog-me-template/internal/core"
+	"sync"
+)
+
+var cfg *Config
+var once sync.Once
+
+func init() {
+	once.Do(func() {
+		cfg = &Config{}
+	})
+}
+
+func GetInstanceOfConfig() *Config {
+	return cfg
+}
+
+type Config struct {
+	mux        sync.Mutex
+	RunMode    string     `mapstructure:"run_mode" json:"run_mode"`
+	App        App        `mapstructure:"app" json:"app"`
+	Server     Server     `mapstructure:"server" json:"server"`
+	Upstream   Upstream   `mapstructure:"upstream" json:"upstream"`
+	Downstream Downstream `mapstructure:"downstream" json:"downstream"`
+}
+
+type App struct {
+	AppName string `mapstructure:"app_name" json:"app_name"`
+	Version string `mapstructure:"version" json:"version"`
+}
+
+type Server struct {
+	Host            string `mapstructure:"host" json:"host"`
+	Port            int    `mapstructure:"port" json:"port"`
+	ShutdownTimeout int    `mapstructure:"shutdown_timeout" json:"shutdown_timeout"`
+}
+
+type Downstream struct {
+	MaxblogBETemplate Address `mapstructure:"maxblog_be_template" json:"maxblog_be_template"`
+}
+
+type Upstream struct {
+	MaxblogFETemplate Address `mapstructure:"maxblog_fe_template" json:"maxblog_fe_template"`
+}
+
+type Address struct {
+	Host string `mapstructure:"host" json:"host"`
+	Port int    `mapstructure:"port" json:"port"`
+}
+
+func (cfg *Config) Load(configDir string, configFile string) {
+	configPath := configDir + "/" + configFile
+	v := viper.New()
+	v.SetConfigFile(configPath)
+	err := v.ReadInConfig()
+	if err != nil {
+		panic(core.Config_File_Read_Failed + core.COLON + err.Error())
+	}
+	err = v.Unmarshal(cfg)
+	if err != nil {
+		panic(core.Config_File_Parse_Failed + core.COLON + err.Error())
+	}
+}
