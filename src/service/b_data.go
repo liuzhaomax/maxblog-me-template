@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 	logger "github.com/sirupsen/logrus"
@@ -19,7 +18,6 @@ type BData struct{}
 
 func (b *BData) GetDataById(c *gin.Context, dataReq *schema.DataReq) (*schema.DataRes, error) {
 	addr := core.GetDownstreamMaxblogBETemplateAddr()
-	fmt.Println(addr)
 	conn, err := grpc.Dial(addr, grpc.WithInsecure())
 	if err != nil {
 		logger.Fatalf("[%s 方法失败] %s: %s", utils.GetFuncName(), core.GRPC_Dial_Failed, err.Error())
