@@ -16,7 +16,7 @@ var DataSet = wire.NewSet(wire.Struct(new(BData), "*"))
 
 type BData struct{}
 
-func (b *BData) GetDataById(c *gin.Context, dataReq *schema.DataReq) (*schema.DataRes, error) {
+func (b *BData) GetDataById(c *gin.Context, id uint32) (*schema.DataRes, error) {
 	addr := core.GetDownstreamMaxblogBETemplateAddr()
 	conn, err := grpc.Dial(addr, grpc.WithInsecure())
 	if err != nil {
@@ -24,7 +24,7 @@ func (b *BData) GetDataById(c *gin.Context, dataReq *schema.DataReq) (*schema.Da
 		return nil, err
 	}
 	client := pb.NewDataServiceClient(conn)
-	pbRes, err := client.GetDataById(context.Background(), &pb.IdRequest{Id: dataReq.ID})
+	pbRes, err := client.GetDataById(context.Background(), &pb.IdRequest{Id: id})
 	if err != nil {
 		return nil, err
 	}

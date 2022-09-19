@@ -4,8 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 	"maxblog-me-template/internal/core"
-	"maxblog-me-template/src/schema"
 	"maxblog-me-template/src/service"
+	"maxblog-me-template/src/utils"
 	"net/http"
 )
 
@@ -17,11 +17,12 @@ type HData struct {
 }
 
 func (hData *HData) GetDataById(c *gin.Context) {
-	var dataReq schema.DataReq
-	if err := c.ShouldBind(&dataReq); err != nil {
+	idRaw := c.Param("id")
+	id, err := utils.Str2Uint32(idRaw)
+	if err != nil {
 		hData.IRes.ResFail(c, http.StatusBadRequest, core.NewError(998, err))
 	}
-	dataRes, err := hData.BData.GetDataById(c, &dataReq)
+	dataRes, err := hData.BData.GetDataById(c, id)
 	if err != nil {
 		hData.IRes.ResFail(c, http.StatusBadRequest, core.NewError(998, err))
 	}
