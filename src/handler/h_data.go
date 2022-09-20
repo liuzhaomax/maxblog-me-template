@@ -20,12 +20,12 @@ func (hData *HData) GetDataById(c *gin.Context) {
 	idRaw := c.Param("id")
 	id, err := utils.Str2Uint32(idRaw)
 	if err != nil {
-		hData.IRes.ResFail(c, http.StatusBadRequest, core.FormatError(998, err))
+		hData.IRes.ResFail(c, http.StatusBadRequest, core.FormatError(299, err))
 		return
 	}
 	dataRes, err := hData.BData.GetDataById(c, id)
 	if err != nil {
-		hData.IRes.ResFail(c, http.StatusInternalServerError, core.FormatError(997, err))
+		hData.IRes.ResFail(c, http.StatusInternalServerError, core.FormatError(399, err))
 		return
 	}
 	hData.IRes.ResSuccess(c, gin.H{
