@@ -59,7 +59,7 @@ func InitServer(ctx context.Context, handler http.Handler) func() {
 	go func() {
 		logger.WithContext(ctx).Infof("Server is running at %s", addr)
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			logger.Fatal(core.Server_Serve_Failed, err)
+			logger.Fatal(core.Server_Serve_Failed)
 		}
 	}()
 	return func() {
