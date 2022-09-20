@@ -1,6 +1,8 @@
 package core
 
 var ErrorMsg = map[int]string{
+	996: "Upstream error",
+	997: "Downstream error",
 	998: "System internal error",
 	999: "Unknown error",
 }
@@ -18,7 +20,7 @@ func (err *Error) Error() string {
 	return err.Message
 }
 
-func NewError(errorCode int, err error) *Error {
+func HandleError(errorCode int, err error) *Error {
 	var errObj = new(Error)
 	errObj.Code = errorCode
 	errObj.Message = ErrorMsg[errorCode]

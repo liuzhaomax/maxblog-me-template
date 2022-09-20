@@ -20,11 +20,13 @@ func (hData *HData) GetDataById(c *gin.Context) {
 	idRaw := c.Param("id")
 	id, err := utils.Str2Uint32(idRaw)
 	if err != nil {
-		hData.IRes.ResFail(c, http.StatusBadRequest, core.NewError(998, err))
+		hData.IRes.ResFail(c, http.StatusBadRequest, core.HandleError(998, err))
+		return
 	}
 	dataRes, err := hData.BData.GetDataById(c, id)
 	if err != nil {
-		hData.IRes.ResFail(c, http.StatusBadRequest, core.NewError(998, err))
+		hData.IRes.ResFail(c, http.StatusInternalServerError, core.HandleError(997, err))
+		return
 	}
 	hData.IRes.ResSuccess(c, gin.H{
 		"Hello Data": dataRes.Mobile, // TODO 根据openapi修改

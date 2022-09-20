@@ -40,7 +40,7 @@ func (inter *Interceptor) CheckTwoTokens() gin.HandlerFunc {
 		cookieTokenEmail, _ := core.ParseToken(cookieToken)
 		// checking tokens info
 		if headerTokenEmail != cookieTokenEmail || headerTokenEmail == "" || cookieTokenEmail == "" {
-			ctx.AbortWithStatusJSON(http.StatusUnauthorized, core.NewError(110, nil))
+			ctx.AbortWithStatusJSON(http.StatusUnauthorized, core.HandleError(110, nil))
 		}
 		ctx.Next()
 	}

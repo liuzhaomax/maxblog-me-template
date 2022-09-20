@@ -24,8 +24,8 @@ func (res *Response) ResJson(ctx *gin.Context, status int, sth interface{}) {
 	ctx.Abort()
 }
 
-func (res *Response) ResFail(ctx *gin.Context, code int, err *Error) {
-	res.ResError(ctx, code, err)
+func (res *Response) ResFail(ctx *gin.Context, status int, err *Error) {
+	res.ResError(ctx, status, err)
 }
 
 func (res *Response) ResError(ctx *gin.Context, status int, err *Error) {
