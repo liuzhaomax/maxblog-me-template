@@ -1,10 +1,31 @@
 package core
 
-var ErrorMsg = map[int]string{
-	996: "Upstream error",
-	997: "Downstream error",
-	998: "System internal error",
-	999: "Unknown error",
+// logger.WithFields(logger.Fields{
+//     "失败方法": utils.GetFuncName(),
+// }).Fatal(core.FormatError(902, err).Error())
+
+// logger.Info(core.FormatInfo(102))
+
+var message = map[int]string{
+	100: "成功",
+	101: "配置文件读取成功",
+	102: "服务启动开始",
+	103: "服务关闭开始",
+	104: "服务正在关闭",
+	105: "服务中断信号收到",
+	106: "服务启动成功",
+
+	299: "上游系统未知错误",
+
+	300: "gRPC拨号失败",
+	399: "下游系统未知错误",
+
+	900: "配置文件读取失败",
+	901: "配置文件解析失败",
+	902: "打开日志文件失败",
+	903: "服务启动失败",
+	998: "系统内部错误",
+	999: "未知错误",
 }
 
 type Error struct {
@@ -20,12 +41,16 @@ func (err *Error) Error() string {
 	return err.Message
 }
 
-func HandleError(errorCode int, err error) *Error {
+func FormatError(errorCode int, err error) *Error {
 	var errObj = new(Error)
 	errObj.Code = errorCode
-	errObj.Message = ErrorMsg[errorCode]
+	errObj.Message = message[errorCode]
 	if err != nil {
 		errObj.Err = err
 	}
 	return errObj
+}
+
+func FormatInfo(infoCode int) string {
+	return message[infoCode]
 }

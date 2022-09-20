@@ -7,6 +7,7 @@ import (
 	logger "github.com/sirupsen/logrus"
 	"maxblog-me-template/internal/conf"
 	"maxblog-me-template/internal/core"
+	"maxblog-me-template/internal/utils"
 	"net/http"
 	"os"
 	"os/signal"
@@ -38,7 +39,7 @@ func InitConfig(opts *options) {
 	cfg.Load(opts.ConfigDir, opts.ConfigFile)
 	logger.WithFields(logger.Fields{
 		"path": opts.ConfigDir + "/" + opts.ConfigFile,
-	}).Info(core.Config_File_Load_Succeeded)
+	}).Info(core.FormatInfo(101))
 	core.SetUpstreamAddr(cfg.Upstream.MaxblogFETemplate.Host, cfg.Upstream.MaxblogFETemplate.Port)
 	core.SetDownstreamAddr(cfg.Downstream.MaxblogBETemplate.Host, cfg.Downstream.MaxblogBETemplate.Port)
 }
@@ -59,17 +60,19 @@ func InitServer(ctx context.Context, handler http.Handler) func() {
 	go func() {
 		logger.WithContext(ctx).Infof("Server is running at %s", addr)
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			logger.Fatal(core.Server_Serve_Failed)
+			logger.WithFields(logger.Fields{
+				"失败方法": utils.GetFuncName(),
+			}).Fatal(core.FormatError(903, err).Error())
 		}
 	}()
 	return func() {
+		logger.Info(core.FormatInfo(103))
 		ctx, cancel := context.WithTimeout(ctx, time.Second*time.Duration(cfg.Server.ShutdownTimeout))
 		defer cancel()
 		server.SetKeepAlivesEnabled(false)
 		if err := server.Shutdown(ctx); err != nil {
 			logger.WithContext(ctx).Errorf(err.Error())
 		}
-		logger.Info(core.Server_Stoped)
 	}
 }
 
@@ -91,7 +94,7 @@ func Init(ctx context.Context, opts ...Option) func() {
 }
 
 func Launch(ctx context.Context, opts ...Option) {
-	logger.Info(core.Server_Launch_Start)
+	logger.Info(core.FormatInfo(102))
 	clean := Init(ctx, opts...)
 	cfg := conf.GetInstanceOfConfig()
 	logger.WithFields(logger.Fields{
@@ -100,14 +103,14 @@ func Launch(ctx context.Context, opts ...Option) {
 		"pid":      os.Getpid(),
 		"host":     cfg.Server.Host,
 		"port":     cfg.Server.Port,
-	}).Info(core.Server_Started)
+	}).Info(core.FormatInfo(106))
 	state := 1
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 LOOP:
 	for {
 		sig := <-sc
-		logger.WithContext(ctx).Infof("%s [%s]", core.Server_Interrupt_Received, sig.String())
+		logger.WithContext(ctx).Infof("%s [%s]", core.FormatInfo(105), sig.String())
 		switch sig {
 		case syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT:
 			state = 0
@@ -117,7 +120,7 @@ LOOP:
 			break LOOP
 		}
 	}
-	defer logger.WithContext(ctx).Infof(core.Server_Shutting_Down)
+	defer logger.WithContext(ctx).Infof(core.FormatInfo(104))
 	defer time.Sleep(time.Second)
 	defer os.Exit(state)
 	defer clean()

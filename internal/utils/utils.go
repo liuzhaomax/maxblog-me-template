@@ -1,6 +1,9 @@
 package utils
 
-import "reflect"
+import (
+	"reflect"
+	"runtime"
+)
 
 func In(haystack interface{}, needle interface{}) bool {
 	sVal := reflect.ValueOf(haystack)
@@ -14,4 +17,11 @@ func In(haystack interface{}, needle interface{}) bool {
 		return false
 	}
 	return false
+}
+
+func GetFuncName() string {
+	pc := make([]uintptr, 1)
+	runtime.Callers(2, pc)
+	function := runtime.FuncForPC(pc[0])
+	return function.Name()
 }

@@ -1,8 +1,10 @@
 package conf
 
 import (
+	logger "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"maxblog-me-template/internal/core"
+	"maxblog-me-template/internal/utils"
 	"sync"
 )
 
@@ -58,10 +60,14 @@ func (cfg *Config) Load(configDir string, configFile string) {
 	v.SetConfigFile(configPath)
 	err := v.ReadInConfig()
 	if err != nil {
-		panic(core.Config_File_Read_Failed + core.COLON + err.Error())
+		logger.WithFields(logger.Fields{
+			"失败方法": utils.GetFuncName(),
+		}).Panic(core.FormatError(900, err).Error())
 	}
 	err = v.Unmarshal(cfg)
 	if err != nil {
-		panic(core.Config_File_Parse_Failed + core.COLON + err.Error())
+		logger.WithFields(logger.Fields{
+			"失败方法": utils.GetFuncName(),
+		}).Panic(core.FormatError(901, err).Error())
 	}
 }
