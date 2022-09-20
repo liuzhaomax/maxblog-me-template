@@ -73,6 +73,7 @@ func InitServer(ctx context.Context, handler http.Handler) func() {
 		if err := server.Shutdown(ctx); err != nil {
 			logger.WithContext(ctx).Errorf(err.Error())
 		}
+		logger.Info(core.FormatInfo(107))
 	}
 }
 
