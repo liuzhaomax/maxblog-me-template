@@ -12,7 +12,7 @@ type Response struct{}
 
 type IResponse interface {
 	ResSuccess(ctx *gin.Context, sth interface{})
-	ResFail(ctx *gin.Context, code int, err *Error)
+	ResFailure(ctx *gin.Context, code int, err *Error)
 }
 
 func (res *Response) ResSuccess(ctx *gin.Context, sth interface{}) {
@@ -30,10 +30,11 @@ func (res *Response) ResJson(ctx *gin.Context, status int, sth interface{}) {
 	ctx.Abort()
 }
 
-func (res *Response) ResFail(ctx *gin.Context, status int, err *Error) {
+func (res *Response) ResFailure(ctx *gin.Context, status int, err *Error) {
 	res.ResError(ctx, status, err)
 }
 
 func (res *Response) ResError(ctx *gin.Context, status int, err *Error) {
 	res.ResJson(ctx, status, err)
+	ctx.Abort()
 }
