@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	const ConfigDir = "env/raw"
+	const ConfigDir = "env"
 	const ConfigFile = "dev.yaml"
 	ctx := context.Background()
 	app.Launch(
