@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 	"maxblog-me-template/internal/core"
@@ -25,10 +26,9 @@ func (hData *HData) GetDataById(c *gin.Context) {
 	}
 	dataRes, err := hData.BData.GetDataById(c, id)
 	if err != nil {
+		fmt.Println(err.Error())
 		hData.IRes.ResFail(c, http.StatusInternalServerError, core.FormatError(399, err))
 		return
 	}
-	hData.IRes.ResSuccess(c, gin.H{
-		"Hello Data": dataRes.Mobile, // TODO 根据openapi修改
-	})
+	hData.IRes.ResSuccess(c, dataRes)
 }

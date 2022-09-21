@@ -31,25 +31,23 @@ var message = map[int]string{
 }
 
 type Error struct {
-	Code    int    `json:"code"`
-	Message string `json:"msg"`
-	Err     error  `json:"error"`
+	Code int    `json:"code"`
+	Desc string `json:"desc"`
+	Err  error  `json:"error"`
 }
 
 func (err *Error) Error() string {
 	if err.Err != nil {
 		return err.Err.Error()
 	}
-	return err.Message
+	return err.Desc
 }
 
 func FormatError(errorCode int, err error) *Error {
 	var errObj = new(Error)
 	errObj.Code = errorCode
-	errObj.Message = message[errorCode]
-	if err != nil {
-		errObj.Err = err
-	}
+	errObj.Desc = message[errorCode]
+	errObj.Err = err
 	return errObj
 }
 

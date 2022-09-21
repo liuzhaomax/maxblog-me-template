@@ -16,7 +16,13 @@ type IResponse interface {
 }
 
 func (res *Response) ResSuccess(ctx *gin.Context, sth interface{}) {
-	res.ResJson(ctx, http.StatusOK, sth)
+	res.ResJson(ctx, http.StatusOK, gin.H{
+		"status": gin.H{
+			"code": 0,
+			"desc": "success",
+		},
+		"data": sth,
+	})
 }
 
 func (res *Response) ResJson(ctx *gin.Context, status int, sth interface{}) {
