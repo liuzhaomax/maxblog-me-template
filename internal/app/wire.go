@@ -19,6 +19,7 @@ func InitInjector() (*Injector, error) {
 		api.APISet,
 		interceptor.InterceptorSet,
 		core.ResponseSet,
+		core.LoggerSet,
 		dataHandler.HandlerSet,
 		dataService.ServiceSet,
 		InjectorSet,

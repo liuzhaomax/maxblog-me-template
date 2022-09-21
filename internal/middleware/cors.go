@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"maxblog-me-template/internal/core"
-	"maxblog-me-template/internal/utils"
 	"net/http"
 )
 
@@ -13,7 +12,7 @@ func Cors() gin.HandlerFunc {
 		fmt.Sprintf("http://%s", core.GetUpstreamAddr()),
 	}
 	return func(ctx *gin.Context) {
-		if utils.In(corsWhiteList, ctx.Request.Header.Get("Origin")) {
+		if core.In(corsWhiteList, ctx.Request.Header.Get("Origin")) {
 			ctx.Header("Access-Control-Allow-Origin", ctx.Request.Header.Get("Origin"))
 		}
 		ctx.Header("Access-Control-Allow-Headers", "Content-Type, AccessToken, X-CSRF-Token, Authorization, Token, Set-Cookie, X-Requested-With, Access-Control-Allow-Origin, Content-Security-Policy")

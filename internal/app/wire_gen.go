@@ -19,7 +19,10 @@ import (
 
 func InitInjector() (*Injector, error) {
 	bData := &service.BData{}
-	response := &core.Response{}
+	logger := &core.Logger{}
+	response := &core.Response{
+		ILogger: logger,
+	}
 	hData := &handler.HData{
 		BData: bData,
 		IRes:  response,

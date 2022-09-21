@@ -7,7 +7,6 @@ import (
 	logger "github.com/sirupsen/logrus"
 	"maxblog-me-template/internal/conf"
 	"maxblog-me-template/internal/core"
-	"maxblog-me-template/internal/utils"
 	"net/http"
 	"os"
 	"os/signal"
@@ -61,7 +60,7 @@ func InitServer(ctx context.Context, handler http.Handler) func() {
 		logger.WithContext(ctx).Infof("Server is running at %s", addr)
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			logger.WithFields(logger.Fields{
-				"失败方法": utils.GetFuncName(),
+				"失败方法": core.GetFuncName(),
 			}).Fatal(core.FormatError(903, err).Error())
 		}
 	}()

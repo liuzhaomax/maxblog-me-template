@@ -7,7 +7,6 @@ import (
 	logger "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"maxblog-me-template/internal/core"
-	"maxblog-me-template/internal/utils"
 	"maxblog-me-template/src/pb"
 	"maxblog-me-template/src/schema"
 )
@@ -21,7 +20,7 @@ func (b *BData) GetDataById(c *gin.Context, id uint32) (*schema.DataRes, error) 
 	conn, err := grpc.Dial(addr, grpc.WithInsecure())
 	if err != nil {
 		logger.WithFields(logger.Fields{
-			"失败方法": utils.GetFuncName(),
+			"失败方法": core.GetFuncName(),
 		}).Fatal(core.FormatError(300, err).Error())
 		return nil, err
 	}

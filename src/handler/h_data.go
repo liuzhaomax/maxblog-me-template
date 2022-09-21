@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 	"maxblog-me-template/internal/core"
@@ -21,14 +20,13 @@ func (hData *HData) GetDataById(c *gin.Context) {
 	idRaw := c.Param("id")
 	id, err := utils.Str2Uint32(idRaw)
 	if err != nil {
-		hData.IRes.ResFailure(c, http.StatusBadRequest, core.FormatError(299, err))
+		hData.IRes.ResFailure(c, core.GetFuncName(), http.StatusBadRequest, core.FormatError(299, err))
 		return
 	}
 	dataRes, err := hData.BData.GetDataById(c, id)
 	if err != nil {
-		fmt.Println(err.Error())
-		hData.IRes.ResFailure(c, http.StatusInternalServerError, core.FormatError(399, err))
+		hData.IRes.ResFailure(c, core.GetFuncName(), http.StatusInternalServerError, core.FormatError(399, err))
 		return
 	}
-	hData.IRes.ResSuccess(c, dataRes)
+	hData.IRes.ResSuccess(c, core.GetFuncName(), dataRes)
 }
