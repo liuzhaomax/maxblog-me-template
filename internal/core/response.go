@@ -27,7 +27,6 @@ func (res *Response) ResSuccess(ctx *gin.Context, sth interface{}) {
 
 func (res *Response) ResJson(ctx *gin.Context, status int, sth interface{}) {
 	ctx.JSON(status, sth)
-	ctx.Abort()
 }
 
 func (res *Response) ResFailure(ctx *gin.Context, status int, err *Error) {
@@ -36,5 +35,4 @@ func (res *Response) ResFailure(ctx *gin.Context, status int, err *Error) {
 
 func (res *Response) ResError(ctx *gin.Context, status int, err *Error) {
 	res.ResJson(ctx, status, err)
-	ctx.Abort()
 }
