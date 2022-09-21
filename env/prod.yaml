@@ -1,4 +1,6 @@
 run_mode: "release"
+logger:
+  color: false
 
 app:
   app_name: "maxblog-me-template"

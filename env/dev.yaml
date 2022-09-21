@@ -1,4 +1,6 @@
 run_mode: "debug"
+logger:
+  color: true
 
 app:
   app_name: "maxblog-me-template"
