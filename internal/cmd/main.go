@@ -2,16 +2,16 @@ package main
 
 import (
 	"context"
+	"flag"
 	"maxblog-me-template/internal/app"
 )
 
 func main() {
-	const ConfigDir = "env"
-	const ConfigFile = "dev.yaml"
+	config := flag.String("c", "env/dev.yaml", "配置文件")
+	flag.Parse()
 	ctx := context.Background()
 	app.Launch(
 		ctx,
-		app.SetConfigDir(ConfigDir),
-		app.SetConfigFile(ConfigFile),
+		app.SetConfigFile(*config),
 	)
 }

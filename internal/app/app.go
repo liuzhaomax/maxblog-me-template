@@ -21,12 +21,6 @@ type options struct {
 
 type Option func(*options)
 
-func SetConfigDir(configDir string) Option {
-	return func(opts *options) {
-		opts.ConfigDir = configDir
-	}
-}
-
 func SetConfigFile(configFile string) Option {
 	return func(opts *options) {
 		opts.ConfigFile = configFile
@@ -35,10 +29,10 @@ func SetConfigFile(configFile string) Option {
 
 func InitConfig(opts *options) {
 	cfg := conf.GetInstanceOfConfig()
-	cfg.Load(opts.ConfigDir, opts.ConfigFile)
+	cfg.Load(opts.ConfigFile)
 	conf.InitLogger()
 	logger.WithFields(logger.Fields{
-		"path": opts.ConfigDir + "/" + opts.ConfigFile,
+		"path": opts.ConfigFile,
 	}).Info(core.FormatInfo(101))
 	core.SetUpstreamAddr(cfg.Upstream.MaxblogFETemplate.Host, cfg.Upstream.MaxblogFETemplate.Port)
 	core.SetDownstreamAddr(cfg.Downstream.MaxblogBETemplate.Host, cfg.Downstream.MaxblogBETemplate.Port)

@@ -58,8 +58,8 @@ type Address struct {
 	Port int    `mapstructure:"port" json:"port"`
 }
 
-func (cfg *Config) Load(configDir string, configFile string) {
-	configPath := configDir + "/" + configFile
+func (cfg *Config) Load(configFile string) {
+	configPath := configFile
 	v := viper.New()
 	v.SetConfigFile(configPath)
 	err := v.ReadInConfig()
