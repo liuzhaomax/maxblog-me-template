@@ -22,7 +22,7 @@ lint:
 
 # 单元测试
 unit:
-	go test -v -race -timeout 1000s -covermode=atomic -coverpkg=./... -coverprofile=unit_test.out ./src/model/... ./src/service/...
+	go test -v -race -timeout 1000s -covermode=atomic -coverpkg=./... -coverprofile=unit_test.out ./src/handler/... ./src/service/... ./src/utils/...
 
 # API测试
 api:
