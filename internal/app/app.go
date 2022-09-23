@@ -79,6 +79,7 @@ func Init(ctx context.Context, opts ...Option) func() {
 	}
 	// init conf
 	InitConfig(&options)
+	logger.Info(core.FormatInfo(102))
 	// init injector
 	injector, _ := InitInjector()
 	// init server
@@ -89,7 +90,6 @@ func Init(ctx context.Context, opts ...Option) func() {
 }
 
 func Launch(ctx context.Context, opts ...Option) {
-	logger.Info(core.FormatInfo(102))
 	clean := Init(ctx, opts...)
 	cfg := conf.GetInstanceOfConfig()
 	logger.WithFields(logger.Fields{
