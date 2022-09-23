@@ -1,5 +1,7 @@
 package core
 
+import "fmt"
+
 // logger.WithFields(logger.Fields{
 //     "失败方法": utils.GetFuncName(),
 // }).Fatal(core.FormatError(902, err).Error())
@@ -40,7 +42,7 @@ type Error struct {
 
 func (err *Error) Error() string {
 	if err.Err != nil {
-		return err.Err.Error()
+		return fmt.Sprintf("%s: %s", err.Desc, err.Err.Error())
 	}
 	return err.Desc
 }
