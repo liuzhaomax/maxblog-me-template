@@ -10,7 +10,7 @@ tidy:
 
 # 打包
 build:
-	go build -o $(BuiltFile) internal/cmd/main.go
+	go build -o $(BuiltFile) -tags prod internal/cmd/main.go
 
 # 运行
 run:
