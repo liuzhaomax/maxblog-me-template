@@ -20,7 +20,7 @@ func (hData *HData) GetDataById(c *gin.Context) {
 	idRaw := c.Param("id")
 	id, err := utils.Str2Uint32(idRaw)
 	if err != nil {
-		hData.IRes.ResFailure(c, core.GetFuncName(), http.StatusBadRequest, core.FormatError(299, err))
+		hData.IRes.ResFailure(c, core.GetFuncName(), http.StatusBadRequest, core.FormatError(201, err))
 		return
 	}
 	dataRes, err := hData.BData.GetDataById(c, id)
