@@ -16,19 +16,19 @@ server:
 
 upstream:
   maxblog_fe_template:
-    host: "127.0.0.1"
+    host: "0.0.0.0"
     port: 9100
 
 downstream:
   maxblog_be_template:
-    host: "127.0.0.1"
+    host: "0.0.0.0"
     port: 9300
 
 redis:
-  host: "127.0.0.1"
+  host: "0.0.0.0"
   port: 6379
 
 consul:
-  host: "127.0.0.1"
+  host: "0.0.0.0"
   port: 8500
 
