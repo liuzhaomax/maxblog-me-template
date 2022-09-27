@@ -9,8 +9,8 @@ import (
 	"maxblog-me-template/internal/conf"
 	"maxblog-me-template/internal/core"
 	"maxblog-me-template/internal/middleware/interceptor"
-	dataHandler "maxblog-me-template/src/handler"
-	dataService "maxblog-me-template/src/service"
+	"maxblog-me-template/src/handler"
+	"maxblog-me-template/src/service"
 )
 
 func InitInjector() (*Injector, error) {
@@ -20,8 +20,8 @@ func InitInjector() (*Injector, error) {
 		interceptor.InterceptorSet,
 		core.ResponseSet,
 		core.LoggerSet,
-		dataHandler.HandlerSet,
-		dataService.ServiceSet,
+		handler.HandlerSet,
+		service.ServiceSet,
 		InjectorSet,
 	)
 	return new(Injector), nil
