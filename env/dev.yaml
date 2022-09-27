@@ -9,6 +9,8 @@ app:
 server:
   host: "127.0.0.1"
   port: 9200
+  protocol: "http"
+  secure: false
   shutdown_timeout: 10
   tags:
     - maxblog-me-template
