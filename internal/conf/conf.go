@@ -50,12 +50,20 @@ type Downstream struct {
 }
 
 type Upstream struct {
-	MaxblogFETemplate Address `mapstructure:"maxblog_fe_template" json:"maxblog_fe_template"`
+	MaxblogFETemplate AddressHttp `mapstructure:"maxblog_fe_template" json:"maxblog_fe_template"`
 }
 
 type Address struct {
 	Host string `mapstructure:"host" json:"host"`
 	Port int    `mapstructure:"port" json:"port"`
+}
+
+type AddressHttp struct {
+	Protocol string `mapstructure:"protocol" json:"protocol"`
+	Domain   string `mapstructure:"domain" json:"domain"`
+	Host     string `mapstructure:"host" json:"host"`
+	Port     int    `mapstructure:"port" json:"port"`
+	Secure   bool   `mapstructure:"secure" json:"secure"`
 }
 
 func (cfg *Config) Load(configFile string) {
@@ -74,4 +82,21 @@ func (cfg *Config) Load(configFile string) {
 			"失败方法": core.GetFuncName(),
 		}).Panic(core.FormatError(901, err).Error())
 	}
+	// 录入相关微服务地址
+	ctx := core.GetInstanceOfContext()
+	cfg.RegisterUpStreamToContext(ctx)
+	cfg.RegisterDownstreamsToContext(ctx)
+}
+
+func (cfg *Config) RegisterUpStreamToContext(ctx *core.Context) {
+	ctx.Upstream.MaxblogFETemplate.Host = cfg.Upstream.MaxblogFETemplate.Host
+	ctx.Upstream.MaxblogFETemplate.Port = cfg.Upstream.MaxblogFETemplate.Port
+	ctx.Upstream.MaxblogFETemplate.Protocol = cfg.Upstream.MaxblogFETemplate.Protocol
+	ctx.Upstream.MaxblogFETemplate.Domain = cfg.Upstream.MaxblogFETemplate.Domain
+	ctx.Upstream.MaxblogFETemplate.Secure = cfg.Upstream.MaxblogFETemplate.Secure
+}
+
+func (cfg *Config) RegisterDownstreamsToContext(ctx *core.Context) {
+	ctx.Downstream.MaxblogBETemplate.Host = cfg.Downstream.MaxblogBETemplate.Host
+	ctx.Downstream.MaxblogBETemplate.Port = cfg.Downstream.MaxblogBETemplate.Port
 }

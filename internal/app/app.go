@@ -34,8 +34,6 @@ func InitConfig(opts *options) {
 	logger.WithFields(logger.Fields{
 		"path": opts.ConfigFile,
 	}).Info(core.FormatInfo(101))
-	core.SetUpstreamAddr(cfg.Upstream.MaxblogFETemplate.Host, cfg.Upstream.MaxblogFETemplate.Port)
-	core.SetDownstreamAddr(cfg.Downstream.MaxblogBETemplate.Host, cfg.Downstream.MaxblogBETemplate.Port)
 }
 
 func InitServer(ctx context.Context, handler http.Handler) func() {
