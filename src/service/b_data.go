@@ -22,7 +22,7 @@ func (b *BData) GetDataById(c *gin.Context, id uint32) (*schema.DataRes, error) 
 	if err != nil {
 		logger.WithFields(logger.Fields{
 			"失败方法": core.GetFuncName(),
-		}).Fatal(core.FormatError(300, err).Error())
+		}).Info(core.FormatError(300, err).Error())
 		return nil, err
 	}
 	client := pb.NewDataServiceClient(conn)
