@@ -4,7 +4,7 @@ import "fmt"
 
 // logger.WithFields(logger.Fields{
 //     "失败方法": utils.GetFuncName(),
-// }).Fatal(core.FormatError(902, err).Error())
+// }).Info(core.FormatError(902, err).Error())
 
 // logger.Info(core.FormatInfo(102))
 
