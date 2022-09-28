@@ -28,5 +28,5 @@ func (hData *HData) GetDataById(c *gin.Context) {
 		hData.IRes.ResFailure(c, core.GetFuncName(), http.StatusInternalServerError, core.FormatError(399, err))
 		return
 	}
-	hData.IRes.ResSuccess(c, core.GetFuncName(), dataRes)
+	hData.IRes.ResSuccess(c, core.GetFuncName(), http.StatusOK, dataRes)
 }
