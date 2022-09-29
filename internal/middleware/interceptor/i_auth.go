@@ -19,7 +19,7 @@ func init() {
 	})
 }
 
-func GetInstanceOfContext() *Interceptor {
+func GetInstanceOfInterceptor() *Interceptor {
 	return interceptor
 }
 
