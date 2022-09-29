@@ -81,15 +81,15 @@ func GetProjectPath() string {
 }
 
 func GetPublicKey() *rsa.PublicKey {
-	return GetInstanceOfContext().PublicKey
+	return ctx.PublicKey
 }
 
 func GetPublicKeyStr() string {
-	return GetInstanceOfContext().PublicKeyStr
+	return ctx.PublicKeyStr
 }
 
 func GetPrivateKey() *rsa.PrivateKey {
-	return GetInstanceOfContext().PrivateKey
+	return ctx.PrivateKey
 }
 
 func SetKeys() {
