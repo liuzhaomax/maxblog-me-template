@@ -86,6 +86,10 @@ func (cfg *Config) Load(configFile string) {
 	ctx := core.GetInstanceOfContext()
 	cfg.RegisterUpStreamToContext(ctx)
 	cfg.RegisterDownstreamsToContext(ctx)
+	// 设置密钥或加密方式
+	//core.SetKeys()
+	//core.SetPwdEncodingOpts()
+	//core.SetJWTSecret("liuzhaomax")
 }
 
 func (cfg *Config) RegisterUpStreamToContext(ctx *core.Context) {
