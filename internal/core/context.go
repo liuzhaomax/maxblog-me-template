@@ -113,7 +113,7 @@ func SetPwdEncodingOpts() {
 	}
 }
 
-func GetEncodePwd(pwd string) (string, string) {
+func GetEncodedPwd(pwd string) (string, string) {
 	salt, encodedPwd := password.Encode(pwd, ctx.PwdEncodingOpts)
 	return salt, encodedPwd
 }
