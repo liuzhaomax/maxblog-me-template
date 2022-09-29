@@ -117,3 +117,7 @@ func GetEncodePwd(pwd string) (string, string) {
 	salt, encodedPwd := password.Encode(pwd, ctx.PwdEncodingOpts)
 	return salt, encodedPwd
 }
+
+func VerifyEncodedPwd(pwdHeldRaw string, salt string, pwdTarget string) bool {
+	return password.Verify(pwdHeldRaw, salt, pwdTarget, ctx.PwdEncodingOpts)
+}
