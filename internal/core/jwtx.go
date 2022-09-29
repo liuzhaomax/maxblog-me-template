@@ -2,7 +2,7 @@ package core
 
 import (
 	"errors"
-	"github.com/dgrijalva/jwt-go"
+	jwt1 "github.com/dgrijalva/jwt-go"
 	"time"
 )
 
@@ -14,7 +14,7 @@ const (
 )
 
 type CustomClaims struct {
-	jwt.StandardClaims
+	jwt1.StandardClaims
 	Mobile string
 }
 
@@ -29,13 +29,13 @@ func NewJWT() *JWT {
 func (j *JWT) GenerateToken(text string, duration time.Duration) (string, error) {
 	now := time.Now()
 	claims := CustomClaims{
-		StandardClaims: jwt.StandardClaims{
+		StandardClaims: jwt1.StandardClaims{
 			NotBefore: now.Unix(),
 			ExpiresAt: now.Add(duration).Unix(),
 		},
 		Mobile: text,
 	}
-	at := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	at := jwt1.NewWithClaims(jwt1.SigningMethodHS256, claims)
 	token, err := at.SignedString([]byte(ctx.JWTSecret))
 	if err != nil {
 		return "", err
@@ -44,16 +44,16 @@ func (j *JWT) GenerateToken(text string, duration time.Duration) (string, error)
 }
 
 func (j *JWT) ParseToken(tokenStr string) (string, error) {
-	token, err := jwt.ParseWithClaims(tokenStr, &CustomClaims{}, func(tokenStr *jwt.Token) (interface{}, error) {
+	token, err := jwt1.ParseWithClaims(tokenStr, &CustomClaims{}, func(tokenStr *jwt1.Token) (interface{}, error) {
 		return j.SigningKey, nil
 	})
 	if err != nil {
-		if result, ok := err.(jwt.ValidationError); ok {
-			if result.Errors&jwt.ValidationErrorMalformed != 0 {
+		if result, ok := err.(jwt1.ValidationError); ok {
+			if result.Errors&jwt1.ValidationErrorMalformed != 0 {
 				return "", errors.New(TokenMalformed)
-			} else if result.Errors&jwt.ValidationErrorExpired != 0 {
+			} else if result.Errors&jwt1.ValidationErrorExpired != 0 {
 				return "", errors.New(TokenExpired)
-			} else if result.Errors&jwt.ValidationErrorNotValidYet != 0 {
+			} else if result.Errors&jwt1.ValidationErrorNotValidYet != 0 {
 				return "", errors.New(TokenNotValidYet)
 			} else {
 				return "", errors.New(TokenInvalid)
@@ -69,14 +69,14 @@ func (j *JWT) ParseToken(tokenStr string) (string, error) {
 
 func (j *JWT) RefreshToken(tokenStr string) (string, error) {
 	duration := time.Hour * 24 * 7 // 一周
-	token, err := jwt.ParseWithClaims(tokenStr, &CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
+	token, err := jwt1.ParseWithClaims(tokenStr, &CustomClaims{}, func(token *jwt1.Token) (interface{}, error) {
 		return j.SigningKey, nil
 	})
 	if err != nil {
 		return "", err
 	}
 	if claims, ok := token.Claims.(*CustomClaims); ok && token.Valid {
-		jwt.TimeFunc = time.Now
+		jwt1.TimeFunc = time.Now
 		claims.StandardClaims.ExpiresAt = time.Now().Add(duration).Unix()
 		return j.GenerateToken(claims.Mobile, duration)
 	}
