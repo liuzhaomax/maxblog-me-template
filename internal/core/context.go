@@ -88,3 +88,12 @@ func GetPublicKeyStr() string {
 func GetPrivateKey() *rsa.PrivateKey {
 	return GetInstanceOfContext().PrivateKey
 }
+
+func SetKeys() {
+	GetInstanceOfContext().JWTSecret = "liuzhaomax"
+	prk, puk, _ := GenRsaKeyPair(2048)
+	GetInstanceOfContext().PublicKey = puk
+	GetInstanceOfContext().PrivateKey = prk
+	publicKeyStr, _ := PublicKeyToString()
+	GetInstanceOfContext().PublicKeyStr = publicKeyStr
+}
