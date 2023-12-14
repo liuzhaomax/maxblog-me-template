@@ -24,11 +24,11 @@ func InitLogger() {
 }
 
 type LoggerFormat struct {
-	StatusCode int
-	Took       time.Duration
-	ClientIP   string
-	Method     string
-	URI        string
+	StatusCode int           `json:"code"`
+	Took       time.Duration `json:"took"`
+	ClientIP   string        `json:"client_ip"`
+	Method     string        `json:"method"`
+	URI        string        `json:"uri"`
 }
 
 func LoggerToFile() gin.HandlerFunc {
