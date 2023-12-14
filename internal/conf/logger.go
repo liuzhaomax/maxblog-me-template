@@ -1,6 +1,7 @@
 package conf
 
 import (
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"io"
@@ -22,6 +23,14 @@ func InitLogger() {
 	logrus.SetOutput(io.MultiWriter(file, os.Stdout))
 }
 
+type LoggerFormat struct {
+	StatusCode int
+	Took       time.Duration
+	ClientIP   string
+	Method     string
+	URI        string
+}
+
 func LoggerToFile() gin.HandlerFunc {
 	fileName := "golog.txt"
 	src, err := os.OpenFile(fileName, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
@@ -33,22 +42,39 @@ func LoggerToFile() gin.HandlerFunc {
 	logger := logrus.New()
 	logger.Out = src
 	logger.SetLevel(logrus.InfoLevel)
-	logger.SetFormatter(&logrus.TextFormatter{ForceColors: cfg.Logger.Color})
+	logger.SetFormatter(&logrus.JSONFormatter{
+		TimestampFormat:   "",
+		DisableTimestamp:  false,
+		DisableHTMLEscape: false,
+		DataKey:           "",
+		FieldMap:          nil,
+		CallerPrettyfier:  nil,
+		PrettyPrint:       false,
+	})
 	return func(c *gin.Context) {
 		startTime := time.Now()
 		c.Next()
 		endTime := time.Now()
-		latencyTime := endTime.Sub(startTime)
-		reqMethod := c.Request.Method
-		reqUri := c.Request.RequestURI
+		took := endTime.Sub(startTime)
+		method := c.Request.Method
+		uri := c.Request.RequestURI
 		statusCode := c.Writer.Status()
 		clientIP := c.ClientIP()
-		logger.Infof("| %3d | %13v | %15s | %8s | %s ",
-			statusCode,
-			latencyTime,
-			clientIP,
-			reqMethod,
-			reqUri,
-		)
+		//logger.Infof("| %3d | %13v | %15s | %8s | %s ",
+		//    statusCode,
+		//    took,
+		//    clientIP,
+		//    method,
+		//    uri,
+		//)
+		format := &LoggerFormat{
+			StatusCode: statusCode,
+			Took:       took,
+			ClientIP:   clientIP,
+			Method:     method,
+			URI:        uri,
+		}
+		formatBytes, _ := json.Marshal(format)
+		logger.Infof(string(formatBytes))
 	}
 }
