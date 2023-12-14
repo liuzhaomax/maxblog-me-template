@@ -60,6 +60,7 @@ func LoggerToFile() gin.HandlerFunc {
 		uri := c.Request.RequestURI
 		statusCode := c.Writer.Status()
 		clientIP := c.ClientIP()
+		// 竖线分割写法
 		//logger.Infof("| %3d | %13v | %15s | %8s | %s ",
 		//    statusCode,
 		//    took,
@@ -67,6 +68,8 @@ func LoggerToFile() gin.HandlerFunc {
 		//    method,
 		//    uri,
 		//)
+
+		// concatenated json 写法
 		format := &LoggerFormat{
 			StatusCode: statusCode,
 			Took:       took,
@@ -76,5 +79,14 @@ func LoggerToFile() gin.HandlerFunc {
 		}
 		formatBytes, _ := json.Marshal(format)
 		logger.Infof(string(formatBytes))
+
+		// json标准写法
+		//logger.WithFields(logrus.Fields{
+		//	"code":      statusCode,
+		//	"took":      took,
+		//	"client_ip": clientIP,
+		//	"method":    method,
+		//	"uri":       uri,
+		//}).Info("123")
 	}
 }

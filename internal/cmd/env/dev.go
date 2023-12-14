@@ -2,7 +2,9 @@
 
 package env
 
-import "flag"
+import (
+	"flag"
+)
 
 func LoadEnv() *string {
 	config := flag.String("c", "env/dev.yaml", "配置文件")
