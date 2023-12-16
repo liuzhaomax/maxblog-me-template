@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/mattn/go-colorable"
 	"maxblog-me-template/internal/api"
-	"maxblog-me-template/internal/middleware/interceptor"
 )
 
 func init() {
@@ -12,10 +11,10 @@ func init() {
 	gin.ForceConsoleColor()
 }
 
-func InitGinEngine(iHandler api.IHandler, itcpt *interceptor.Interceptor) *gin.Engine {
+func InitGinEngine(iHandler api.IHandler) *gin.Engine {
 	gin.SetMode(cfg.RunMode) // debug, test, release
 	app := gin.Default()
 	app.Use(LoggerToFile())
-	iHandler.Register(app, itcpt)
+	iHandler.Register(app)
 	return app
 }
